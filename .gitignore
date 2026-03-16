@@ -1,19 +1,10 @@
-# Python
 __pycache__/
-*.py[cod]
-*.so
-*.egg
-*.egg-info/
-dist/
-build/
-.env
-.venv
-env/
-venv/
-
-# Jupyter
+*.pyc
+*.pyo
 .ipynb_checkpoints/
-
-# OS
-.DS_Store
-Thumbs.db
+sb3_logs/
+logs/
+*.png
+sb3_logs/
+logs/
+*.png
