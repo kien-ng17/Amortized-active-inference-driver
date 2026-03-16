@@ -1,26 +1,43 @@
-# Intention-Aware Autonomous Driving in Interactive Traffic Scenarios Through Amortized Active Inference
+# Active Inference for Autonomous Driving
 
-## Overview
-This repository contains the code implementation for the paper titled "Intention-Aware Autonomous Driving in Interactive Traffic Scenarios Through Amortized Active Inference" by Kien Nguyen, Oskar Keurulainen, Almas Shintemirov, and Ville Kyrki. The paper presents a novel approach to autonomous driving in interactive traffic scenarios, leveraging amortized active inference to model and predict the intentions of other road users, enabling safer and more efficient navigation.
+Source code for the paper **"Active Inference for Autonomous Driving"**.
 
-## Code Availability
-The code associated with this paper will be uploaded to this repository soon. Please check back for updates or contact the authors for further details.
+## Setup
 
-## Authors
-- Kien Nguyen¹
-- Oskar Keurulainen¹
-- Almas Shintemirov¹,²
-- Ville Kyrki¹
+```bash
+pip install numpy opencv-python matplotlib pillow gymnasium stable-baselines3 sb3-contrib scipy pandas
+```
 
-¹ [Institution/Organization Name]  
-² [Additional Affiliation, if applicable]
+## Notebooks
 
-## Contact
-For inquiries, please reach out to the corresponding author(s) or check the paper for contact details.
+### `01_pedestrian.ipynb` — Pedestrian counter-agent
+Trains the pedestrian QR-DQN model (`models/ped_model`) that acts as the reactive pedestrian in the crossing environments. Run this first.
 
-## License
-[To be specified upon code upload]
+### `02_main.ipynb` — Ego-vehicle policies and evaluation
+Trains three ego-vehicle SAC policies (Full AIF, No-Epistemic, Mode-of-Belief) and produces all paper figures. Model loading and all plot cells run without re-training — skip the cells marked **SKIP** if trained models are already in `models/`.
 
----
+| Cell | Description |
+|---|---|
+| Load pedestrian model | Load `ped_model` into the crossing environments |
+| Sanity check | Quick random-policy episode |
+| Particle Planner | Tree-search baseline |
+| Train all_model | Full AIF policy — **SKIP** |
+| Train all_model_NoE | No-epistemic policy — **SKIP** |
+| Train all_model_mode | Mode-of-belief policy — **SKIP** |
+| Training curves | Plot reward curves from `sb3_logs/` |
+| Load models | Load all three trained policies |
+| Velocity & belief plot | Single-episode velocity/belief figure |
+| False-belief plot | Prior ≠ ground truth scenario |
+| Prior sweep — reward | NoE vs AIF cumulative reward |
+| Prior sweep — velocity | Mode-of-belief vs AIF velocity |
+| IROS trajectory | Snapshot subplots + belief/speed panel |
+| Epistemic comparison | With vs without epistemic value |
 
-*Note: This README will be updated with detailed instructions, dependencies, and usage guidelines once the code is uploaded.*
+## Source modules (`src/`)
+
+| File | Description |
+|---|---|
+| `motion_models.py` | Pedestrian motion model and forward simulation |
+| `particle_filter.py` | Particle filters (pragmatic-only and full EFE) and tree-search planner |
+| `environments.py` | Gymnasium environments for pedestrian and ego-vehicle agents |
+| `visualization.py` | All paper figure functions |
